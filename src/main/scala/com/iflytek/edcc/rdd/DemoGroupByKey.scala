@@ -1,5 +1,6 @@
-package com.iflytek.edcc
+package com.iflytek.edcc.rdd
 
+import com.iflytek.edcc.{Conf, ReadUtil, Util}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -8,12 +9,10 @@ import org.apache.spark.{SparkConf, SparkContext}
   * Date: 2017/10/19
   * Time: 13:52
   * Description
-  *
-  * reducebykey，按key分组聚合处理数据，传入lambda函数，用于处于聚合操作
-  *
+  * groupByKey会将RDD[key,value] 按照相同的key进行分组，形成RDD[key,Iterable[value]]的形式
   */
 
-object DemoReduceByKey {
+object DemoGroupByKey {
 
   def main(args: Array[String]): Unit = {
 
@@ -70,16 +69,11 @@ object DemoReduceByKey {
       val userId = x._5.toString
       val schoolName = x._7.toString
       val event = Util.to_bg1(x._8)
-      ((provinceId,cityId,districtId,districtName,schoolId,schoolName),Set(userId+"#"+event))
-    }).reduceByKey(
-      (x,y)=>{
-        x.++ (y)
-      }
-    ).map(x=>{
-      val key = x._1.productIterator.toArray.mkString("\t")
-      val value = x._2.size
-      Array(key,value).mkString("\t")
-    }).saveAsTextFile(Conf.outputpath1)
+      ((provinceId,cityId,districtId,districtName,schoolId,schoolName),userId+"#"+event)
+    }).groupByKey()
+      .map(x=>{
+        Array(x._1,x._2.toSet.size).mkString("\t")
+      }).saveAsTextFile(Conf.outputpath2)
 
     sc.stop()
 
