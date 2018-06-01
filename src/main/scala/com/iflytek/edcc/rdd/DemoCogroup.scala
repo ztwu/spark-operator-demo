@@ -7,7 +7,7 @@ import org.apache.spark.{SparkConf, SparkContext}
   * User: ztwu2
   * Date: 2018/5/23
   * Time: 8:34
-  * Description
+  * Description 类似full join全连接
   */
 
 object DemoCogroup {
