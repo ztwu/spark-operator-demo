@@ -24,7 +24,7 @@ object DemoReduceByKey {
     //设置数据自动覆盖
     conf.set("spark.hadoop.validateOutputSpecs", "false")
     //设置主节点，local本地线程
-    conf.setMaster("local")
+    conf.setMaster("local[4]")
 
     val sc = new SparkContext(conf)
     sc.setCheckpointDir(Conf.checkpointDir)
@@ -33,6 +33,10 @@ object DemoReduceByKey {
     val dataframe2 = ReadUtil.readDwsLogUserActive(sc);
     val dataframe3 = ReadUtil.readDwsUcUserOrganization(sc);
     val dataframe4 = ReadUtil.readBroadcast(sc);
+    println("dataframe1分区情况："+dataframe1.rdd.partitions.length)
+    println("dataframe2分区情况："+dataframe2.rdd.partitions.length)
+    println("dataframe3分区情况："+dataframe3.rdd.partitions.length)
+    println("dataframe4分区情况："+dataframe4.rdd.partitions.length)
 
     //action算子触发读取数据
     val broadcastData = sc.broadcast(dataframe4.collect())
@@ -50,6 +54,8 @@ object DemoReduceByKey {
         }
         (x(0),x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),districtName)
       })
+
+    println("join后data分区情况："+data.partitions.length)
 
     //缓存rdd数据，持久化存储到内存中
     //中间的计算结果通过cache或者persist放到内存或者磁盘中
