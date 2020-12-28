@@ -44,7 +44,7 @@ object DemoReduceByKey {
     val data = dataframe3.join(dataframe1,dataframe3("school_id")===dataframe1("school_id"),"inner")
       .join(dataframe2,dataframe3("user_id")===dataframe2("user_id"),"left")
       //map side join
-      .map(x=>{
+      .rdd.map(x=>{
         val districtId = x(2).toString
         var districtName = "null";
         for(value <- broadcastData.value){

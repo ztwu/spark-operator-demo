@@ -27,7 +27,7 @@ object DemoFilter {
       x
     }).toDF("user_id")
 
-    dataframe.filter(dataframe("user_id")>3).foreach(println)
+    dataframe.filter(dataframe("user_id")>3).foreach(x=>println(x))
     dataframe.filter($"user_id"<=3).foreach(x=>println(x.getAs[Int]("user_id")))
 
     sc.stop()
