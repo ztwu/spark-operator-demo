@@ -11,7 +11,6 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-        <encoding>UTF-8</encoding>
         <hadoop.version>2.6.0</hadoop.version>
         <scala.version>2.11.8</scala.version>
         <scala.binary.version>2.11</scala.binary.version>
