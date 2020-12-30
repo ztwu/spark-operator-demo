@@ -30,9 +30,10 @@ object DemoWindow {
     val data = sc.makeRDD(Array(("01",1),("01",2),("02",1),("03",1)))
       .toDF("userid","num")
 
-    // dataframe的开窗函数,需要配合hiveContext使用
+    // dataframe的开窗函数
     val window = Window.partitionBy("userid").orderBy(data("num").desc)
-    val newSchoolData = data.withColumn("rn",row_number().over(window))
+//    val newSchoolData = data.withColumn("rn",row_number().over(window))
+    val newSchoolData = data.withColumn("rn",first("num").over(window))
     newSchoolData.show()
 
     sc.stop()
