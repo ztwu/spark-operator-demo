@@ -19,6 +19,9 @@ object DemoMap {
     val sc = new SparkContext(conf)
 
     val data = sc.makeRDD(Seq((1,2),(2,3),(3,4)))
+    val data2 = sc.makeRDD(Seq(("w",2),("ww",3),("www",4)))
+
+    data.zip(data2).foreach(x=>println(x))
 
     //map
     data.map(x => {
