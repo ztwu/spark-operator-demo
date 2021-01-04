@@ -4,7 +4,7 @@ import org.apache.spark.sql.SparkSession
 
 case class user(name:String, no:Int)
 
-object DemoDataFrameMap {
+object DemoMap {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .master("local")
