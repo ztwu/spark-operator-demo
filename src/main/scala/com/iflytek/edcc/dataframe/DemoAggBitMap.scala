@@ -22,11 +22,18 @@ object DemoAggBitMap {
         user("0003", 3)
       ))
     val bitmap = new UdafBitMap()
+    val bitmap2 = new UDAFDistinctBitmap().toColumn
+
     data
       .groupBy(col("name"))
       .agg(bitmap(col("no")))
       .show()
 //        .printSchema()
+
+    data
+      .groupBy(col("name"))
+      .agg(bitmap2)
+      .show()
 
     sparkSession.stop()
 
