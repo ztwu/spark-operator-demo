@@ -19,6 +19,7 @@ object DemoFilter {
 
     val sc = new SparkContext(conf)
     val sqlContext = new SQLContext(sc)
+    // 定义出这个变量,导入他对应的implicits
     import sqlContext.implicits._
 
     val rdd = sc.makeRDD(List(1,2,3,4,5,6,7))
