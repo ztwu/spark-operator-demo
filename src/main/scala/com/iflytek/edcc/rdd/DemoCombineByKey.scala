@@ -32,7 +32,7 @@ object DemoCombineByKey {
     val initialScores = Array(("Fred", 88.0), ("Fred", 95.0), ("Fred", 91.0), ("Wilma", 93.0), ("Wilma", 95.0), ("Wilma", 98.0))
     val d1 = sc.parallelize(initialScores)
     d1.combineByKey(
-      //createCombiner,初始化操作
+      //createCombiner,初始化操作,可以理解为第零个元素
       score => (1, score),
       //mergeValue
       (c1: (Int, Double), newScore) => {

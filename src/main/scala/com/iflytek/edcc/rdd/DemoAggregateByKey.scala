@@ -32,6 +32,7 @@ object DemoAggregateByKey {
       }).repartition(2)
       //aggregateByKey返回值的类型不需要和RDD中value的类型一致
       //zeroValue可以确定value类型,初始化一个元组
+      //可以理解为第零个元素
       .aggregateByKey(new HashSet[String])(
       //seqOp:用来在同一个partition中合并值，map阶段
       (a , b) =>{
