@@ -2,9 +2,9 @@ package com.iflytek.edcc.dataframe
 
 import org.apache.spark.sql.SparkSession
 
-case class user(name:String, no:Int)
 
 object DemoMap {
+  case class user(name:String, no:Int)
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .master("local")
