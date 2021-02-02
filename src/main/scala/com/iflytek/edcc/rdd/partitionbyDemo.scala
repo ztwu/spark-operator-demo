@@ -1,5 +1,6 @@
 package com.iflytek.edcc.rdd
 
+import org.apache.spark.{HashPartitioner, RangePartitioner}
 import org.apache.spark.sql.SparkSession
 
 object partitionbyDemo {
@@ -11,13 +12,15 @@ object partitionbyDemo {
       .getOrCreate()
 
     val sc = spark.sparkContext
-    val data = sc.makeRDD(Array((1,2),(1,3),(2,1),(2,2)))
+    val data = sc.makeRDD(Array((1,2),(1,3),(2,1),(2,2),(3,4),(3,2)))
     data.foreach(println)
     data.partitions.foreach(println)
 
     val data2 = data
 //      对偶元组 key-value
-      .partitionBy(new MySelfPartitioner(2))
+      .partitionBy(new HashPartitioner(2))
+//      .partitionBy(new RangePartitioner(2, data))
+//      .partitionBy(new MySelfPartitioner(2))
 
 //      我们常认为coalesce不产生shuffle会比repartition 产生shuffle效率高，
 //      //      而实际情况往往要根据具体问题具体分析，
@@ -49,7 +52,7 @@ object partitionbyDemo {
 
       //不经过shuffle，是无法将RDD的分区数变多的
 //      .coalesce(4, false) // 不shuffle
-      .coalesce(1, false) // 不shuffle
+//      .coalesce(1, false) // 不shuffle
 
     data2.mapPartitionsWithIndex((index,x)=>{
       println("分区： ",index)

@@ -14,11 +14,31 @@ object partitionbyDemo {
     val sc = spark.sparkContext
     val sql = spark.sqlContext
     import sql.implicits._
-    val data = sc.makeRDD(Array((1,2),(1,3),(2,1),(2,2)))
+    val data = sc.makeRDD(Array((1,2),(1,3),(2,1),(2,2),(3,4),(3,2)))
         .toDF("id","no")
 
     data.show()
     data.rdd.partitions.foreach(println)
+
+    // 2.4.4版本的spark
+    data.repartition(2,$"id").show(false)
+    data.repartitionByRange(2, $"no").show(false)
+
+    val rstest = data.repartition(2).sortWithinPartitions($"no".desc)
+    rstest.show(false)
+    rstest.foreachPartition(x=>{
+      var index = 1
+      x.foreach(item=>{
+        println(index, item)
+        index += 1
+      })
+    })
+    rstest.rdd.mapPartitionsWithIndex((index,x)=>{
+      println("分区： ",index)
+      x.map(item=>{
+        println(item)
+      })
+    }).collect()
 
     val data2 = data
 //      我们常认为coalesce不产生shuffle会比repartition 产生shuffle效率高，
