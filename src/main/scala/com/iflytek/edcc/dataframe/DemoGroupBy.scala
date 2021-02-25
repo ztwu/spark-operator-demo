@@ -32,7 +32,7 @@ object DemoGroupBy {
 
 //    定义groupby规则
     data.groupByKey(row =>{
-      row.getString(0)
+      "num_"+row.getString(0)
     }).count().show()
 
     data.groupBy("userid")
